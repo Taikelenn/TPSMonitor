@@ -3,10 +3,10 @@
   "minVersion": "0.8",
   "package": "ee.kasumata.tpsmon.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-  ],
+  "mixins": [],
   "client": [
-    "ClientConnectionMixin"
+    "ClientConnectionMixin",
+    "InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
