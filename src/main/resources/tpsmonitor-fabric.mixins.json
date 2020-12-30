@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "ee.kasumata.tpsmon.tpsmonitorfabric.mixin",
+  "package": "ee.kasumata.tpsmon.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
+    "ClientConnectionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,4 +1,10 @@
 package ee.kasumata.tpsmon;
 
-public class TPSMonitor {
+import net.fabricmc.api.ModInitializer;
+
+public class TPSMonitor implements ModInitializer {
+    @Override
+    public void onInitialize() {
+
+    }
 }
