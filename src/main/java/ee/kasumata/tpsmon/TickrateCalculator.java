@@ -13,8 +13,8 @@ public final class TickrateCalculator {
         synchronized (UpdateLock) {
             Measurements.add(System.currentTimeMillis());
 
-            if (Measurements.size() > 10) {
-                // retain data from the last 10 seconds only
+            if (Measurements.size() > 15) {
+                // retain data from the last 15 seconds only
                 Measurements.remove(0);
             }
         }
@@ -29,7 +29,9 @@ public final class TickrateCalculator {
             long currentTimestamp = Measurements.get(Measurements.size() - 1);
             long previousTimestamp = Measurements.get(Measurements.size() - averageOfSeconds);
 
-            return ((currentTimestamp - previousTimestamp) * TPS_NORM) / 1000.0;
+            // time of 20 ticks (at best, 1 second)
+            double longTickTime = Math.max((currentTimestamp - previousTimestamp) / (1000.0 * (averageOfSeconds - 1)), 1.0);
+            return TPS_NORM / longTickTime;
         }
     }
 
