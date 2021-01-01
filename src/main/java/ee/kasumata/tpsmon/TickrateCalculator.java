@@ -14,7 +14,7 @@ public final class TickrateCalculator {
             Measurements.add(System.currentTimeMillis());
 
             if (Measurements.size() > 15) {
-                // retain data from the last 15 seconds only
+                // retain data from the last 15 measurements
                 Measurements.remove(0);
             }
         }
@@ -36,11 +36,15 @@ public final class TickrateCalculator {
     }
 
     public static double getCurrentTPS() {
-        return getTPS(2);
+        synchronized (UpdateLock) {
+            return getTPS(2);
+        }
     }
 
     public static double getAverageTPS() {
-        return getTPS(Measurements.size());
+        synchronized (UpdateLock) {
+            return getTPS(Measurements.size());
+        }
     }
 
     private TickrateCalculator() {

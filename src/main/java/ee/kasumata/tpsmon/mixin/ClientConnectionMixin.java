@@ -19,9 +19,6 @@ public class ClientConnectionMixin {
         // this packet should be received exactly every 1 second, any deviation from that indicates that the server is lagging behind
         if (packet.getClass() == WorldTimeUpdateS2CPacket.class) {
             TickrateCalculator.reportReceivedPacket();
-
-            System.out.println(String.format(
-                    Locale.ROOT, "%.2f | %.2f", TickrateCalculator.getCurrentTPS(), TickrateCalculator.getAverageTPS()));
         }
     }
 }

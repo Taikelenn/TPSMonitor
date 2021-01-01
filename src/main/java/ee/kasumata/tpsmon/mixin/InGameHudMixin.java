@@ -27,11 +27,10 @@ public abstract class InGameHudMixin {
         int textX = MinecraftClient.getInstance().getWindow().getScaledWidth() - textRenderer.getWidth(tpsString) - 5;
         int textY = MinecraftClient.getInstance().getWindow().getScaledHeight() - textRenderer.fontHeight - 5;
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
         int color;
-        if (tps >= 17.0)
+        if (tps == 0.0)
+            color = 0xFFFFFF; // white - tps = 0 means we have no data yet
+        else if (tps >= 17.0)
             color = 0x00FF00; // green
         else if (tps >= 12.0)
             color = 0xFFFF00; // yellow
@@ -39,6 +38,9 @@ public abstract class InGameHudMixin {
             color = 0xFF7F00; // orange
         else
             color = 0xFF0000; // red
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
 
         textRenderer.draw(matrices, tpsString, textX, textY, color | 0xFF000000);
 
