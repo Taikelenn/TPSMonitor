@@ -20,6 +20,12 @@ public final class TickrateCalculator {
         }
     }
 
+    public static void reset() {
+        synchronized (UpdateLock) {
+            Measurements.clear();
+        }
+    }
+
     private static double getTPS(int averageOfSeconds) {
         synchronized (UpdateLock) {
             if (Measurements.size() < 2) {
@@ -32,12 +38,6 @@ public final class TickrateCalculator {
             // time of 20 ticks (at best, 1 second)
             double longTickTime = Math.max((currentTimestamp - previousTimestamp) / (1000.0 * (averageOfSeconds - 1)), 1.0);
             return TPS_NORM / longTickTime;
-        }
-    }
-
-    public static double getCurrentTPS() {
-        synchronized (UpdateLock) {
-            return getTPS(2);
         }
     }
 

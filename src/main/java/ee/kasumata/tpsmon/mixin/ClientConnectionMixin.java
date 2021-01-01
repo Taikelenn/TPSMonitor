@@ -4,13 +4,12 @@ import ee.kasumata.tpsmon.TickrateCalculator;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
+import net.minecraft.network.packet.s2c.login.LoginSuccessS2CPacket;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Locale;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
@@ -19,6 +18,8 @@ public class ClientConnectionMixin {
         // this packet should be received exactly every 1 second, any deviation from that indicates that the server is lagging behind
         if (packet.getClass() == WorldTimeUpdateS2CPacket.class) {
             TickrateCalculator.reportReceivedPacket();
+        } else if (packet.getClass() == LoginSuccessS2CPacket.class) {
+            TickrateCalculator.reset();
         }
     }
 }
