@@ -35,7 +35,7 @@ public final class TickrateCalculator {
             long currentTimestamp = Measurements.get(Measurements.size() - 1);
             long previousTimestamp = Measurements.get(Measurements.size() - averageOfSeconds);
 
-            // time of 20 ticks (at best, 1 second)
+            // on average, how long did it take for 20 ticks to execute? (ideal value: 1 second)
             double longTickTime = Math.max((currentTimestamp - previousTimestamp) / (1000.0 * (averageOfSeconds - 1)), 1.0);
             return TPS_NORM / longTickTime;
         }

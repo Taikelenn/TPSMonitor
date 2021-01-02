@@ -18,6 +18,19 @@ import java.util.Locale;
 public abstract class InGameHudMixin {
     @Shadow public abstract TextRenderer getFontRenderer();
 
+    private static int getColorForTPS(double tps) {
+        if (tps == 0.0)
+            return 0xFFFFFF; // white - tps = 0 means we have no data yet
+        else if (tps >= 17.0)
+            return 0x00FF00; // green
+        else if (tps >= 12.0)
+            return 0xFFFF00; // yellow
+        else if (tps >= 8.0)
+            return 0xFF7F00; // orange
+        else
+            return 0xFF0000; // red
+    }
+
     @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/client/util/math/MatrixStack;F)V")
     public void render(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         double tps = TickrateCalculator.getAverageTPS();
@@ -27,22 +40,10 @@ public abstract class InGameHudMixin {
         int textX = MinecraftClient.getInstance().getWindow().getScaledWidth() - textRenderer.getWidth(tpsString) - 5;
         int textY = MinecraftClient.getInstance().getWindow().getScaledHeight() - textRenderer.fontHeight - 5;
 
-        int color;
-        if (tps == 0.0)
-            color = 0xFFFFFF; // white - tps = 0 means we have no data yet
-        else if (tps >= 17.0)
-            color = 0x00FF00; // green
-        else if (tps >= 12.0)
-            color = 0xFFFF00; // yellow
-        else if (tps >= 8.0)
-            color = 0xFF7F00; // orange
-        else
-            color = 0xFF0000; // red
-
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        textRenderer.draw(matrices, tpsString, textX, textY, color | 0xFF000000);
+        textRenderer.draw(matrices, tpsString, textX, textY, getColorForTPS(tps) | 0xFF000000);
 
         RenderSystem.disableBlend();
     }
